@@ -1,0 +1,139 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/entry_param.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scripts/ui/build_machine.gd" type="Script" id=2]
+
+[node name="BuildMachine" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="PanelContainer" type="PanelContainer" parent="CenterContainer"]
+margin_left = 312.0
+margin_top = 150.0
+margin_right = 712.0
+margin_bottom = 450.0
+rect_min_size = Vector2( 400, 300 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer/PanelContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 393.0
+margin_bottom = 293.0
+
+[node name="BaseLabel" parent="CenterContainer/PanelContainer/VBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 386.0
+margin_bottom = 40.0
+size_flags_vertical = 3
+
+[node name="ParamLabel" parent="CenterContainer/PanelContainer/VBoxContainer/BaseLabel" index="0"]
+margin_top = 13.0
+margin_right = 191.0
+margin_bottom = 27.0
+text = "Base"
+
+[node name="SpinBox" parent="CenterContainer/PanelContainer/VBoxContainer/BaseLabel" index="1"]
+margin_left = 195.0
+margin_right = 386.0
+margin_bottom = 40.0
+
+[node name="MantisseLabel" parent="CenterContainer/PanelContainer/VBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 44.0
+margin_right = 386.0
+margin_bottom = 84.0
+size_flags_vertical = 3
+
+[node name="ParamLabel" parent="CenterContainer/PanelContainer/VBoxContainer/MantisseLabel" index="0"]
+margin_top = 13.0
+margin_right = 191.0
+margin_bottom = 27.0
+text = "Mantisse Len"
+
+[node name="SpinBox" parent="CenterContainer/PanelContainer/VBoxContainer/MantisseLabel" index="1"]
+margin_left = 195.0
+margin_right = 386.0
+margin_bottom = 40.0
+
+[node name="Exp1Label" parent="CenterContainer/PanelContainer/VBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 88.0
+margin_right = 386.0
+margin_bottom = 128.0
+size_flags_vertical = 3
+
+[node name="ParamLabel" parent="CenterContainer/PanelContainer/VBoxContainer/Exp1Label" index="0"]
+margin_top = 13.0
+margin_right = 191.0
+margin_bottom = 27.0
+text = "Exp 1"
+
+[node name="SpinBox" parent="CenterContainer/PanelContainer/VBoxContainer/Exp1Label" index="1"]
+margin_left = 195.0
+margin_right = 386.0
+margin_bottom = 40.0
+
+[node name="Exp2Label" parent="CenterContainer/PanelContainer/VBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 132.0
+margin_right = 386.0
+margin_bottom = 173.0
+size_flags_vertical = 3
+
+[node name="ParamLabel" parent="CenterContainer/PanelContainer/VBoxContainer/Exp2Label" index="0"]
+margin_top = 13.0
+margin_right = 191.0
+margin_bottom = 27.0
+text = "Exp 2"
+
+[node name="SpinBox" parent="CenterContainer/PanelContainer/VBoxContainer/Exp2Label" index="1"]
+margin_left = 195.0
+margin_right = 386.0
+margin_bottom = 41.0
+
+[node name="UseRounding" type="HBoxContainer" parent="CenterContainer/PanelContainer/VBoxContainer"]
+margin_top = 177.0
+margin_right = 386.0
+margin_bottom = 217.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ParamLabel" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/UseRounding"]
+margin_top = 13.0
+margin_right = 191.0
+margin_bottom = 27.0
+size_flags_horizontal = 3
+size_flags_vertical = 6
+text = "Use rounding"
+align = 1
+valign = 1
+
+[node name="CheckBox" type="CheckBox" parent="CenterContainer/PanelContainer/VBoxContainer/UseRounding"]
+margin_left = 195.0
+margin_right = 386.0
+margin_bottom = 40.0
+size_flags_horizontal = 7
+size_flags_vertical = 3
+
+[node name="CreateButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
+margin_top = 221.0
+margin_right = 386.0
+margin_bottom = 286.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.6
+text = "Build Machine"
+
+[editable path="CenterContainer/PanelContainer/VBoxContainer/BaseLabel"]
+[editable path="CenterContainer/PanelContainer/VBoxContainer/MantisseLabel"]
+[editable path="CenterContainer/PanelContainer/VBoxContainer/Exp1Label"]
+[editable path="CenterContainer/PanelContainer/VBoxContainer/Exp2Label"]
