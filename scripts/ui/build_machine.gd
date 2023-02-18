@@ -11,7 +11,6 @@ func _ready():
 	if (error != OK):
 		print("Couldn't connect signal pressed in create_button on BuildMachine scene")
 
-
 func _on_create_button_pressed():
 	var base: int = int(base_input.get_line_edit().text)
 	var mantisse_len: int = int(mantisse_input.get_line_edit().text)

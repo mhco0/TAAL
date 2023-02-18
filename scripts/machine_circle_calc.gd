@@ -8,5 +8,11 @@ func _ready():
 	if err != OK:
 		printerr("Couldn't connect input_change signal in radius input on MainProgram")
 
+##
+# @brief Callback function called when the input from the hud change
+# @param radius The radius from the input
+# @param angle The angle from the input
+# @param color The color from the input
+##
 func _on_input_change(radius, angle, color) -> void:
 	arc_drawer.set_variables(radius, angle, color)
