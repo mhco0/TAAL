@@ -27,7 +27,12 @@ _global_script_class_icons={
 [application]
 
 config/name="Taal"
+run/main_scene="res://scenes/build_machine.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+ProgramParameters="*res://scripts/program_parameters.gd"
 
 [gui]
 

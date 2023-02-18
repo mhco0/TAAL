@@ -29,88 +29,72 @@ margin_bottom = 293.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 386.0
-margin_bottom = 40.0
+margin_bottom = 48.0
 size_flags_vertical = 3
 
 [node name="ParamLabel" parent="CenterContainer/PanelContainer/VBoxContainer/BaseLabel" index="0"]
-margin_top = 13.0
+margin_top = 17.0
 margin_right = 191.0
-margin_bottom = 27.0
+margin_bottom = 31.0
 text = "Base"
 
 [node name="SpinBox" parent="CenterContainer/PanelContainer/VBoxContainer/BaseLabel" index="1"]
 margin_left = 195.0
 margin_right = 386.0
-margin_bottom = 40.0
+margin_bottom = 48.0
+value = 10.0
 
 [node name="MantisseLabel" parent="CenterContainer/PanelContainer/VBoxContainer" instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 44.0
+margin_top = 52.0
 margin_right = 386.0
-margin_bottom = 84.0
+margin_bottom = 100.0
 size_flags_vertical = 3
 
 [node name="ParamLabel" parent="CenterContainer/PanelContainer/VBoxContainer/MantisseLabel" index="0"]
-margin_top = 13.0
+margin_top = 17.0
 margin_right = 191.0
-margin_bottom = 27.0
+margin_bottom = 31.0
 text = "Mantisse Len"
 
 [node name="SpinBox" parent="CenterContainer/PanelContainer/VBoxContainer/MantisseLabel" index="1"]
 margin_left = 195.0
 margin_right = 386.0
-margin_bottom = 40.0
+margin_bottom = 48.0
+value = 5.0
 
-[node name="Exp1Label" parent="CenterContainer/PanelContainer/VBoxContainer" instance=ExtResource( 1 )]
+[node name="ExpMaxLabel" parent="CenterContainer/PanelContainer/VBoxContainer" instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 88.0
+margin_top = 104.0
 margin_right = 386.0
-margin_bottom = 128.0
+margin_bottom = 152.0
 size_flags_vertical = 3
 
-[node name="ParamLabel" parent="CenterContainer/PanelContainer/VBoxContainer/Exp1Label" index="0"]
-margin_top = 13.0
+[node name="ParamLabel" parent="CenterContainer/PanelContainer/VBoxContainer/ExpMaxLabel" index="0"]
+margin_top = 17.0
 margin_right = 191.0
-margin_bottom = 27.0
-text = "Exp 1"
+margin_bottom = 31.0
+text = "Exp Max"
 
-[node name="SpinBox" parent="CenterContainer/PanelContainer/VBoxContainer/Exp1Label" index="1"]
+[node name="SpinBox" parent="CenterContainer/PanelContainer/VBoxContainer/ExpMaxLabel" index="1"]
 margin_left = 195.0
 margin_right = 386.0
-margin_bottom = 40.0
-
-[node name="Exp2Label" parent="CenterContainer/PanelContainer/VBoxContainer" instance=ExtResource( 1 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 132.0
-margin_right = 386.0
-margin_bottom = 173.0
-size_flags_vertical = 3
-
-[node name="ParamLabel" parent="CenterContainer/PanelContainer/VBoxContainer/Exp2Label" index="0"]
-margin_top = 13.0
-margin_right = 191.0
-margin_bottom = 27.0
-text = "Exp 2"
-
-[node name="SpinBox" parent="CenterContainer/PanelContainer/VBoxContainer/Exp2Label" index="1"]
-margin_left = 195.0
-margin_right = 386.0
-margin_bottom = 41.0
+margin_bottom = 48.0
+value = 10.0
 
 [node name="UseRounding" type="HBoxContainer" parent="CenterContainer/PanelContainer/VBoxContainer"]
-margin_top = 177.0
+margin_top = 156.0
 margin_right = 386.0
-margin_bottom = 217.0
+margin_bottom = 204.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ParamLabel" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/UseRounding"]
-margin_top = 13.0
+margin_top = 17.0
 margin_right = 191.0
-margin_bottom = 27.0
+margin_bottom = 31.0
 size_flags_horizontal = 3
 size_flags_vertical = 6
 text = "Use rounding"
@@ -120,12 +104,12 @@ valign = 1
 [node name="CheckBox" type="CheckBox" parent="CenterContainer/PanelContainer/VBoxContainer/UseRounding"]
 margin_left = 195.0
 margin_right = 386.0
-margin_bottom = 40.0
+margin_bottom = 48.0
 size_flags_horizontal = 7
 size_flags_vertical = 3
 
 [node name="CreateButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
-margin_top = 221.0
+margin_top = 208.0
 margin_right = 386.0
 margin_bottom = 286.0
 size_flags_horizontal = 3
@@ -135,5 +119,4 @@ text = "Build Machine"
 
 [editable path="CenterContainer/PanelContainer/VBoxContainer/BaseLabel"]
 [editable path="CenterContainer/PanelContainer/VBoxContainer/MantisseLabel"]
-[editable path="CenterContainer/PanelContainer/VBoxContainer/Exp1Label"]
-[editable path="CenterContainer/PanelContainer/VBoxContainer/Exp2Label"]
+[editable path="CenterContainer/PanelContainer/VBoxContainer/ExpMaxLabel"]
