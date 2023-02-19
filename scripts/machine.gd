@@ -60,9 +60,9 @@ func represent(flt: float) -> MachineNumber:
 func add(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 	n1 = MachineNumber.new(n1._base, PoolByteArray(n1._mantisse), n1._exp, n1._sign)
 	n2 = MachineNumber.new(n2._base, PoolByteArray(n2._mantisse), n2._exp, n2._sign)
-	if n1._mantisse.empty():
+	if n1.is_zero():
 		return n2
-	if n2._mantisse.empty():
+	if n2.is_zero():
 		return n1
 	if (n1._sign != n2._sign):
 		n2 = MachineNumber.new(n2._base, PoolByteArray(n2._mantisse), n2._exp, !n2._sign)
@@ -103,6 +103,10 @@ func compare(a: MachineNumber, b: MachineNumber) -> int:
 func sub(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 	n1 = MachineNumber.new(n1._base, PoolByteArray(n1._mantisse), n1._exp, n1._sign)
 	n2 = MachineNumber.new(n2._base, PoolByteArray(n2._mantisse), n2._exp, !n2._sign)
+	if n1.is_zero():
+		return n2
+	if n2.is_zero():
+		return n1
 	if (n1._sign == n2._sign):
 		return add(n1, n2)
 	
