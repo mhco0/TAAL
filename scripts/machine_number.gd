@@ -43,11 +43,12 @@ func print():
 func normalize() -> void:
 	if (is_zero()):
 		_exp = 0
-	var n: int = _mantisse.size()
-	var should_shift: int = 0
+		_sign = 0
+		return
 	
-	for i in range(n):
-		if(_mantisse[i] == 0):
+	var should_shift: int = 0
+	for d in _mantisse:
+		if d == 0:
 			should_shift -= 1
 		else:
 			break

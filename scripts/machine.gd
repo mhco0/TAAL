@@ -66,7 +66,7 @@ func represent(flt: float) -> MachineNumber:
 		cnt += 1
 	# Combine the sign, mantissa, and exponent into the final representation
 
-	return MachineNumber.new(_base, mantissa_str, exponent, signa) 
+	return MachineNumber.new(_base, mantissa_str, exponent, signa)
 
 func add(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 	n1 = MachineNumber.new(n1._base, PoolByteArray(n1._mantisse), n1._exp, n1._sign)
@@ -105,6 +105,12 @@ func compare_mantisses(a: PoolByteArray, b: PoolByteArray) -> int:
 	return a.size() - b.size()
 
 func compare(a: MachineNumber, b: MachineNumber) -> int:
+	if (a.is_zero() && b.is_zero()):
+		return 0
+	if (a.is_zero()):
+		return -1 + 2*int(b._sign)
+	if (b.is_zero()):
+		return 1 - 2*int(a._sign)
 	if a._sign != b._sign:
 		return int(b._sign) - int(a._sign)
 	if a._exp != b._exp:
@@ -197,8 +203,11 @@ func mult(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 
 func div(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 	var signal = int(n1._sign) ^ int(n2._sign)
-	n1 = MachineNumber.new(n1._base, PoolByteArray(n1._mantisse), n1._exp, n1._sign)
-	n2 = MachineNumber.new(n2._base, PoolByteArray(n2._mantisse), n2._exp, n2._sign)
+	n1 = MachineNumber.new(n1._base, PoolByteArray(n1._mantisse), n1._exp, 0)
+	n2 = MachineNumber.new(n2._base, PoolByteArray(n2._mantisse), n2._exp, 0)
+	assert(!n2.is_zero(), "ERROR: You must give a non zero value.");
+	if n1.is_zero():
+		return n1
 	var _exp = n1._exp - n2._exp + 1
 	n1._exp = 0
 	n2._exp = 0
@@ -206,7 +215,7 @@ func div(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 	var started = false
 	while _mantisse.size() < _mantisse_len:
 		var digit = 0
-		var cur = MachineNumber.new(0, [], 0, false)
+		var cur = represent(0)
 		while compare(n1, add(cur, n2)) >= 0:
 			cur = add(cur, n2)
 			digit += 1
@@ -221,8 +230,18 @@ func div(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 	return MachineNumber.new(_mantisse_len, _mantisse, _exp, signal)
 
 func machine_sin(n1: float) -> MachineNumber:
-	
-	return MachineNumber.new(0, [], 0, false)
+	var tpot = represent(n1)
+	var tsqr = mult(tpot, tpot)
+	var fat = represent(1)
+	var sum = represent(0)
+	for i in range(1, 20):
+		if i%2 == 0:
+			sum = add(sum, div(tpot, fat))
+		else:
+			sum = sub(sum, div(tpot, fat))
+		tpot = mult(tpot, tsqr)
+		fat = mult(fat, mult(represent(i+1), represent(i+2)))
+	return sum
 	
 func machine_cos(n1: float) -> MachineNumber:
 	return MachineNumber.new(0, [], 0, false)
