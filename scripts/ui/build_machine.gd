@@ -21,5 +21,8 @@ func _on_create_button_pressed():
 	
 	print("Count of representable numbers on machine: %f" % [machine.representable_elements()])
 	
+	machine.represent(9).print()
+	machine.represent(7).print()
+	machine.mult(machine.represent(9), machine.represent(7)).print()
 	ProgramParameters.set_machine(machine)
 	get_tree().change_scene("res://scenes/machine_circle_calc.tscn")
