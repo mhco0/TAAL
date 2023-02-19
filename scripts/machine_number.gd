@@ -17,6 +17,7 @@ func _init(base, mantisse, mexp, msign):
 	_mantisse = mantisse
 	_exp = mexp
 	_sign = msign
+	normalize()
 
 func shift(diff):
 	var n: int = _mantisse.size()
@@ -40,6 +41,8 @@ func print():
 	print(result)
 
 func normalize() -> void:
+	if (is_zero()):
+		_exp = 0
 	var n: int = _mantisse.size()
 	var should_shift: int = 0
 	
