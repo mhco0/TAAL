@@ -156,6 +156,29 @@ func mult(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 	var n3: MachineNumber = MachineNumber.new(n1._base, PoolByteArray(n1._mantisse), \
 												0, int(n1._sign) ^ int(n2._sign))
 	
+	# Gets the first non zero by its right
+	var should_shift_from_right: int = 0
+	for i in range(_mantisse_len):
+		var x = _mantisse_len - i - 1
+		if(n1._mantisse[x] == 0):
+			should_shift_from_right += 1
+		else:
+			break
+	
+	n1.shift(should_shift_from_right)
+	n1.print()
+	should_shift_from_right = 0
+	
+	for i in range(_mantisse_len):
+		var x = _mantisse_len - i - 1
+		if(n2._mantisse[x] == 0):
+			should_shift_from_right += 1
+		else:
+			break
+	
+	n2.shift(should_shift_from_right)
+	n2.print()
+	
 	n3.shift(_mantisse_len)
 	
 	for i in range(_mantisse_len):
