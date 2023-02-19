@@ -17,4 +17,18 @@ func _init(base, mantisse, mexp, msign):
 	_mantisse = mantisse
 	_exp = mexp
 	_sign = msign
-	
+
+func shift(diff):
+	var n: int = _mantisse.size()
+	var src_mantisse = PoolByteArray(_mantisse)
+	for i in range(n):
+		var x = n-i-1
+		_mantisse[x] = src_mantisse[x-diff] if x-diff >= 0 && x-diff < n else 0
+	_exp += diff
+
+func print():
+	var mantisse: String = ""
+	for x in _mantisse:
+		mantisse += str(x)
+	var result: String = "0." + ("-" if _sign else "") + mantisse + "E" + str(_exp)
+	print(result)
