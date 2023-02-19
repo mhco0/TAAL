@@ -26,6 +26,12 @@ func shift(diff):
 		_mantisse[x] = src_mantisse[x-diff] if x-diff >= 0 && x-diff < n else 0
 	_exp += diff
 
+func is_zero() -> bool:
+	for x in _mantisse:
+		if x != 0:
+			return false;
+	return true;
+
 func print():
 	var mantisse: String = ""
 	for x in _mantisse:
