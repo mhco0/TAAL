@@ -109,7 +109,22 @@ func sub(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 	return MachineNumber.new(0, [], 0, false)
 
 func mult(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
-	return MachineNumber.new(0, [], 0, false)
+	var n3: MachineNumber = MachineNumber.new(n1._sign, PoolByteArray(n1._mantisse), \
+												n1._exp + n2._exp, n1._sign or n2._sign)
+	
+	var carry_out: int = 0
+	for i in range(_mantisse_len):
+		var x = n2._mantisse_len - i - 1
+		var d = int(n1._mantisse[x]) * int(n2._mantisse[x]) + carry_out
+		carry_out = d/_base
+		d %= _base
+		n3._mantisse[x] = d
+	
+	if carry_out:
+		n3.shift(1)
+		n3._mantisse[0] = carry_out
+	
+	return n3
 
 func div(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 	return MachineNumber.new(0, [], 0, false)
