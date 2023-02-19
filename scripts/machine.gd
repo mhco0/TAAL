@@ -32,13 +32,69 @@ func representable_elements() -> int:
 	return int (2 * (_base - 1) * pow(_base, _mantisse_len - 1) * (_exp_max - _exp_min + 1)) + 1
 
 # Divide the number by its base and get the full representation in the mantisse 
-func represent(number: float) -> MachineNumber:
-	return MachineNumber.new(0, [], 0, false)
+func represent(flt: float) -> MachineNumber:
+	var signa: bool = flt < 0
+	flt = abs(flt)
+	var mantissa: float = 0.0
+	var exponent: int = 0
+
+	# Extract the mantissa and exponent of the number
+	if flt != 0:
+		exponent = floor(log(flt) / log(_base))+1
+		mantissa = flt / pow(_base, exponent)
+	else:
+		mantissa = 0
+
+	# Convert the mantissa to the chosen base
+	var mantissa_str: PoolByteArray = []
+	var cnt: int = 0
+	while cnt < _mantisse_len:
+		var digit: int = floor(mantissa * _base)
+		mantissa_str.push_back(digit)
+		mantissa = (mantissa * _base) - digit
+		cnt += 1
+	# Combine the sign, mantissa, and exponent into the final representation
+
+	return MachineNumber.new(_base, mantissa_str, exponent, signa) 
 
 func add(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
-	return MachineNumber.new(0, [], 0, false)
+	if n1._exp < n2._exp:
+		var temp = n2
+		n2 = n1
+		n1 = temp
+	var diff = n1._exp - n2._exp
+	n2.shift(diff)
 	
+	var n3 = MachineNumber.new(n1._base, PoolByteArray(n1._mantisse), n1._exp, n1._sign)
+	
+	var carry_out: int = 0
+	for i in range(_mantisse_len):
+		var x = n2._mantisse_len - i - 1
+		var d = int(n1._mantisse[x]) + int(n2._mantisse[x]) + carry_out
+		carry_out = d/_base
+		d %= _base
+		n3._mantisse[x] = d
+	if carry_out:
+		n3.shift(-1)
+		n3._mantisse[0] = 1
+		
+	return n3
+
 func sub(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
+	if n1._exp < n2._exp:
+		var temp = n2
+		n2 = n1
+		n1 = temp
+	var diff = n1._exp - n2._exp
+	n2.shift(diff)
+	if n1._mantisse < n2._mantisse:
+		var temp = n2
+		n2 = n1
+		n1 = temp
+	
+	for i in range(_mantisse_len):
+		var x = n2._mantisse_len - i - 1
+		
 	return MachineNumber.new(0, [], 0, false)
 
 func mult(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
