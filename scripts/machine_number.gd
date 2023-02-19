@@ -30,5 +30,5 @@ func print():
 	var mantisse: String = ""
 	for x in _mantisse:
 		mantisse += str(x)
-	var result: String = "0." + ("-" if _sign else "") + mantisse + "E" + str(_exp)
+	var result: String = ("-" if _sign else "") + "0." + mantisse + "E" + str(_exp)
 	print(result)

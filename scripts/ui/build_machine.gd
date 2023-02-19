@@ -24,7 +24,10 @@ func _on_create_button_pressed():
 	var machine: Machine = Machine.new(base, mantisse_len, exp1, exp2, use_rounding)
 	
 	print("Count of representable numbers on machine: %d" % [machine.representable_elements()])
-	var n1 = machine.represent(0.9999999999);
+	var n1 = machine.represent(9);
+	var n2 = machine.represent(7);
 	n1.print()
-	n1.shift(1)
+	n2.print()
+	var n3 = machine.sub(n2, n1)
 	n1.print()
+	n3.print()
