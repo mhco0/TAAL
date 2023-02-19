@@ -95,10 +95,10 @@ func add(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 	if carry_out:
 		n2.shift(1)
 		n2._mantisse[0] = carry_out
-		
+	n2.normalize()
 	return n2
 	
-func compare_mantises(a: PoolByteArray, b: PoolByteArray) -> int:
+func compare_mantisses(a: PoolByteArray, b: PoolByteArray) -> int:
 	for i in range(min(a.size(), b.size())):
 		if a[i] != b[i]:
 			return a[i] - b[i]
@@ -109,7 +109,7 @@ func compare(a: MachineNumber, b: MachineNumber) -> int:
 		return int(b._sign) - int(a._sign)
 	if a._exp != b._exp:
 		return a._exp - b._exp
-	return compare_mantises(a._mantisse, b._mantisse)
+	return compare_mantisses(a._mantisse, b._mantisse)
 
 func sub(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 	n1 = MachineNumber.new(n1._base, PoolByteArray(n1._mantisse), n1._exp, n1._sign)
@@ -128,14 +128,13 @@ func sub(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 		n1 = temp
 		inv = !inv
 	n2.shift(n1._exp - n2._exp)
-	if compare_mantises(n1._mantisse, n2._mantisse) < 0:
+	if compare_mantisses(n1._mantisse, n2._mantisse) < 0:
 		var temp = n2
 		n2 = n1
 		n1 = temp
 		inv = !inv
 
 	var borrow: int = 0
-	var maxx: int = 0
 	for i in range(_mantisse_len):
 		var x = _mantisse_len - i - 1
 		var diff: int = int(n1._mantisse[x]) - int(n2._mantisse[x]) - borrow
@@ -145,9 +144,7 @@ func sub(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 		else:
 			borrow = 0
 		n1._mantisse[x] = diff
-		if (diff):
-			maxx = x
-	n1.shift(-maxx)
+	n1.normalize()
 	return n1
 
 func mult(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
@@ -199,7 +196,29 @@ func mult(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 	return n3
 
 func div(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
-	return MachineNumber.new(0, [], 0, false)
+	var signal = int(n1._sign) ^ int(n2._sign)
+	n1 = MachineNumber.new(n1._base, PoolByteArray(n1._mantisse), n1._exp, n1._sign)
+	n2 = MachineNumber.new(n2._base, PoolByteArray(n2._mantisse), n2._exp, n2._sign)
+	var _exp = n1._exp - n2._exp + 1
+	n1._exp = 0
+	n2._exp = 0
+	var _mantisse = PoolByteArray()
+	var started = false
+	while _mantisse.size() < _mantisse_len:
+		var digit = 0
+		var cur = MachineNumber.new(0, [], 0, false)
+		while compare(n1, add(cur, n2)) >= 0:
+			cur = add(cur, n2)
+			digit += 1
+		if (started || digit != 0):
+			_mantisse.push_back(digit)
+			started = 1
+		else:
+			_exp -= 1
+		n1 = sub(n1, cur)
+		n1._exp += 1
+	
+	return MachineNumber.new(_mantisse_len, _mantisse, _exp, signal)
 
 func machine_sin(n1: float) -> MachineNumber:
 	

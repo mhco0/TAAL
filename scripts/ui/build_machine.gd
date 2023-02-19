@@ -19,10 +19,10 @@ func _on_create_button_pressed():
 	
 	var machine: Machine = Machine.new(base, mantisse_len, expmax, use_rounding)
 	
-	print("Count of representable numbers on machine: %f" % [machine.representable_elements()])
-	
-	machine.represent(9).print()
-	machine.represent(7).print()
-	machine.mult(machine.represent(9), machine.represent(7)).print()
-	ProgramParameters.set_machine(machine)
-	get_tree().change_scene("res://scenes/machine_circle_calc.tscn")
+	print("Count of representable numbers on machine: %d" % [machine.representable_elements()])
+	var n1 = machine.represent(81);
+	var n2 = machine.represent(9);
+	n1.print()
+	n2.print()
+	var n3 = machine.div(n1, n2)
+	n3.print()
