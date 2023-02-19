@@ -68,12 +68,28 @@ func represent(flt: float) -> MachineNumber:
 
 	return MachineNumber.new(_base, mantissa_str, exponent, signa)
 
+func to_float(n1: MachineNumber) -> float:
+	var res: float = 0
+	var mexp: int = n1._exp
+	
+	for i in range(len(n1._mantisse)):
+		res += int(n1._mantisse[i]) * pow(n1._base, mexp - 1)
+		mexp -= 1
+	
+	if n1._sign:
+		res = -res
+	
+	return res
+
 func add(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
+	print("start add")
 	n1 = MachineNumber.new(n1._base, PoolByteArray(n1._mantisse), n1._exp, n1._sign)
 	n2 = MachineNumber.new(n2._base, PoolByteArray(n2._mantisse), n2._exp, n2._sign)
 	if n1.is_zero():
+		print("goes zero")
 		return n2
 	if n2.is_zero():
+		print("goes zero")
 		return n1
 	if (n1._sign != n2._sign):
 		n2 = MachineNumber.new(n2._base, PoolByteArray(n2._mantisse), n2._exp, !n2._sign)
@@ -96,6 +112,7 @@ func add(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 		n2.shift(1)
 		n2._mantisse[0] = carry_out
 	n2.normalize()
+	print("end add")
 	return n2
 	
 func compare_mantisses(a: PoolByteArray, b: PoolByteArray) -> int:
@@ -118,6 +135,7 @@ func compare(a: MachineNumber, b: MachineNumber) -> int:
 	return compare_mantisses(a._mantisse, b._mantisse)
 
 func sub(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
+	print("start sub")
 	n1 = MachineNumber.new(n1._base, PoolByteArray(n1._mantisse), n1._exp, n1._sign)
 	n2 = MachineNumber.new(n2._base, PoolByteArray(n2._mantisse), n2._exp, !n2._sign)
 	if n1.is_zero():
@@ -151,6 +169,7 @@ func sub(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 			borrow = 0
 		n1._mantisse[x] = diff
 	n1.normalize()
+	print("end sub")
 	return n1
 
 func mult(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
@@ -161,6 +180,7 @@ func mult(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 	
 	n3.shift(_mantisse_len)
 	
+	print("n1 exp: ", n1._exp)
 	for i in range(n1._exp - 1, -1, -1):
 			var n4: MachineNumber = MachineNumber.new(n2._base, PoolByteArray(n2._mantisse), \
 												0, false)
@@ -178,7 +198,7 @@ func mult(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 	return n3
 
 func div(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
-	var signal = int(n1._sign) ^ int(n2._sign)
+	var signa = int(n1._sign) ^ int(n2._sign)
 	n1 = MachineNumber.new(n1._base, PoolByteArray(n1._mantisse), n1._exp, 0)
 	n2 = MachineNumber.new(n2._base, PoolByteArray(n2._mantisse), n2._exp, 0)
 	assert(!n2.is_zero(), "ERROR: You must give a non zero value.");
@@ -203,21 +223,35 @@ func div(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 		n1 = sub(n1, cur)
 		n1._exp += 1
 	
-	return MachineNumber.new(_mantisse_len, _mantisse, _exp, signal)
+	return MachineNumber.new(_mantisse_len, _mantisse, _exp, signa)
 
 func machine_sin(n1: float) -> MachineNumber:
 	var tpot = represent(n1)
 	var tsqr = mult(tpot, tpot)
 	var fat = represent(1)
 	var sum = represent(0)
-	for i in range(1, 20):
+	for i in range(1, 6):
+		print(i, ": ")
+		if (i-1)%2 == 0:
+			sum = add(sum, div(tpot, fat))
+		else:
+			sum = sub(sum, div(tpot, fat))
+		tpot = mult(tpot, tsqr)
+		tpot.print()
+		fat = mult(fat, mult(represent(2*i), represent(2*i+1)))
+		fat.print()
+	return sum
+	
+func machine_cos(n1: float) -> MachineNumber:
+	var tpot = represent(n1)
+	var tsqr = mult(tpot, tpot)
+	var fat = represent(2)
+	var sum = represent(1)
+	for i in range(1, 6):
 		if i%2 == 0:
 			sum = add(sum, div(tpot, fat))
 		else:
 			sum = sub(sum, div(tpot, fat))
 		tpot = mult(tpot, tsqr)
-		fat = mult(fat, mult(represent(i+1), represent(i+2)))
+		fat = mult(fat, mult(represent(i+2), represent(i+3)))
 	return sum
-	
-func machine_cos(n1: float) -> MachineNumber:
-	return MachineNumber.new(0, [], 0, false)

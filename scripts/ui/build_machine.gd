@@ -26,3 +26,11 @@ func _on_create_button_pressed():
 	n2.print()
 	var n3 = machine.mult(n1, n2)
 	n3.print()
+	
+	machine.mult(machine.represent(10), machine.represent(0)).print()
+	print(machine.to_float(machine.represent(3.14151617)))
+	#print(machine.to_float(machine.machine_cos(3.141516)))
+	print(machine.to_float(machine.machine_sin(3.141516)))
+	
+	#ProgramParameters.set_machine(machine)
+	#get_tree().change_scene("res://scenes/machine_circle_calc.tscn")
