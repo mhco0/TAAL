@@ -60,6 +60,10 @@ func represent(flt: float) -> MachineNumber:
 func add(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 	n1 = MachineNumber.new(n1._base, PoolByteArray(n1._mantisse), n1._exp, n1._sign)
 	n2 = MachineNumber.new(n2._base, PoolByteArray(n2._mantisse), n2._exp, n2._sign)
+	if n1._mantisse.empty():
+		return n2
+	if n2._mantisse.empty():
+		return n1
 	if (n1._sign != n2._sign):
 		n2 = MachineNumber.new(n2._base, PoolByteArray(n2._mantisse), n2._exp, !n2._sign)
 		return sub(n1, n2)
@@ -83,11 +87,18 @@ func add(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 		
 	return n2
 	
-func compare_arrays_lex(a: PoolByteArray, b: PoolByteArray) -> int:
-	for i in range(_mantisse_len):
+func compare_mantises(a: PoolByteArray, b: PoolByteArray) -> int:
+	for i in range(min(a.size(), b.size())):
 		if a[i] != b[i]:
 			return a[i] - b[i]
-	return 0
+	return a.size() - b.size()
+
+func compare(a: MachineNumber, b: MachineNumber) -> int:
+	if a._sign != b._sign:
+		return int(b._sign) - int(a._sign)
+	if a._exp != b._exp:
+		return a._exp - b._exp
+	return compare_mantises(a._mantisse, b._mantisse)
 
 func sub(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 	n1 = MachineNumber.new(n1._base, PoolByteArray(n1._mantisse), n1._exp, n1._sign)
@@ -102,7 +113,7 @@ func sub(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 		n1 = temp
 		inv = !inv
 	n2.shift(n1._exp - n2._exp)
-	if compare_arrays_lex(n1._mantisse, n2._mantisse) < 0:
+	if compare_mantises(n1._mantisse, n2._mantisse) < 0:
 		var temp = n2
 		n2 = n1
 		n1 = temp
