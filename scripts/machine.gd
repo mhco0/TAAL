@@ -174,8 +174,8 @@ func sub(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 func mult(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 	n1 = MachineNumber.new(n1._base, PoolByteArray(n1._mantisse), n1._exp, n1._sign)
 	n2 = MachineNumber.new(n2._base, PoolByteArray(n2._mantisse), n2._exp, n2._sign)
-	var n3: MachineNumber = MachineNumber.new(n1._base, PoolByteArray(n1._mantisse), \
-												0, int(n1._sign) ^ int(n2._sign))
+	var signa: bool = int(n1._sign) ^ int(n2._sign)
+	var n3: MachineNumber = MachineNumber.new(n1._base, PoolByteArray(n1._mantisse), 0, false)
 	n2._sign = 0
 	n3.shift(_mantisse_len)
 	#print("multiply %f %f"%[to_float(n1), to_float(n2)])
@@ -196,7 +196,7 @@ func mult(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 			n4.normalize()
 			
 			n3 = self.add(n3, n4)
-	
+	n3._sign = signa
 	n3.normalize()
 	
 	return n3
