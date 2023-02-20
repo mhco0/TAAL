@@ -73,12 +73,12 @@ func to_float(n1: MachineNumber) -> float:
 	var mexp: int = n1._exp
 	
 	for i in range(len(n1._mantisse)):
-		print("base: ", n1._base)
-		print("mantisse number: ", float(n1._mantisse[i]))
-		print("pow: ", pow(n1._base, mexp - 1))
-		print("mult: ", float(n1._mantisse[i]) * pow(n1._base, mexp - 1))
+		#print("base: ", n1._base)
+		#print("mantisse number: ", float(n1._mantisse[i]))
+		#print("pow: ", pow(n1._base, mexp - 1))
+		#print("mult: ", float(n1._mantisse[i]) * pow(n1._base, mexp - 1))
 		res += float(n1._mantisse[i]) * pow(n1._base, mexp - 1)
-		print("sum %d : %f "% [i, res] )
+		#print("sum %d : %f "% [i, res] )
 		mexp -= 1
 	
 	if n1._sign:
@@ -235,7 +235,7 @@ func machine_sin(n1: float) -> MachineNumber:
 	var tsqr = mult(tpot, tpot)
 	var fat = represent(1)
 	var sum = represent(0)
-	for i in range(1, 10):
+	for i in range(1, 11):
 		if (i-1) % 2 == 0:
 			sum = add(sum, div(tpot, fat))
 		else:
@@ -248,18 +248,20 @@ func machine_sin(n1: float) -> MachineNumber:
 	return sum
 	
 func machine_cos(n1: float) -> MachineNumber:
+	n1 = abs(n1)
 	var tpot = represent(n1)
 	var tsqr = mult(tpot, tpot)
 	tpot = represent(1)
 	var fat = represent(1)
 	var sum = represent(0)
-	for i in range(1, 10):
+	for i in range(1, 11):
 		#print(i, ": ")
-		if (i-1) % 2 == 0:
+		if (i - 1) % 2 == 0:
 			sum = add(sum, div(tpot, fat))
 		else:
 			sum = sub(sum, div(tpot, fat))
 		tpot = mult(tpot, tsqr)
-		fat = mult(fat, mult(represent(2*i - 1), represent(2*i)))
-		#sum.print()
+		fat = mult(fat, mult(represent(2*i-1), represent(2*i)))
+
+	sum.print()
 	return sum
