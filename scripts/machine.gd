@@ -236,16 +236,13 @@ func machine_sin(n1: float) -> MachineNumber:
 	var fat = represent(1)
 	var sum = represent(0)
 	for i in range(1, 10):
-		print(i, ": ")
 		if (i-1) % 2 == 0:
 			sum = add(sum, div(tpot, fat))
 		else:
 			sum = sub(sum, div(tpot, fat))
 		#print(i, ": ")
 		tpot = mult(tpot, tsqr)
-
 		fat = mult(fat, mult(represent(2*i), represent(2*i+1)))
-		sum.print()
 
 	#print("ok")
 	return sum
@@ -253,13 +250,16 @@ func machine_sin(n1: float) -> MachineNumber:
 func machine_cos(n1: float) -> MachineNumber:
 	var tpot = represent(n1)
 	var tsqr = mult(tpot, tpot)
-	var fat = represent(2)
-	var sum = represent(1)
+	tpot = represent(1)
+	var fat = represent(1)
+	var sum = represent(0)
 	for i in range(1, 10):
+		#print(i, ": ")
 		if (i-1) % 2 == 0:
 			sum = add(sum, div(tpot, fat))
 		else:
 			sum = sub(sum, div(tpot, fat))
 		tpot = mult(tpot, tsqr)
-		fat = mult(fat, mult(represent(2*i+2), represent(2*i+3)))
+		fat = mult(fat, mult(represent(2*i - 1), represent(2*i)))
+		#sum.print()
 	return sum

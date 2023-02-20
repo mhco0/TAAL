@@ -35,6 +35,7 @@ func _on_create_button_pressed():
 	#print("sin pi -> ", machine.to_float(machine.machine_sin(3.141516)))
 	#print("sin pi/2 -> ", machine.to_float(machine.machine_sin(3.141516 / 2)))
 	print("sin pi/3 -> ", machine.to_float(machine.machine_sin(3.141516 / 3)))
+	print("cos pi/3 -> ", machine.to_float(machine.machine_cos(3.141516 / 3)))
 	#print("sin pi/4 -> ", machine.to_float(machine.machine_sin(3.141516 / 4)))
 	
 	#ProgramParameters.set_machine(machine)
