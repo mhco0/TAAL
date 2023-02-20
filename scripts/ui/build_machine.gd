@@ -20,17 +20,22 @@ func _on_create_button_pressed():
 	var machine: Machine = Machine.new(base, mantisse_len, expmax, use_rounding)
 	
 	print("Count of representable numbers on machine: %d" % [machine.representable_elements()])
-	var n1 = machine.represent(18.0);
-	var n2 = machine.represent(15.0);
+	var n1 = machine.represent(21.0);
+	var n2 = machine.represent(-30.0);
 	n1.print()
 	n2.print()
 	var n3 = machine.mult(n1, n2)
 	n3.print()
 	
 	machine.mult(machine.represent(10), machine.represent(0)).print()
-	print(machine.to_float(machine.represent(3.14151617)))
+	#print(machine.to_float(machine.represent(3.14151617)))
 	#print(machine.to_float(machine.machine_cos(3.141516)))
-	print(machine.to_float(machine.machine_sin(3.141516)))
+	#machine.machine_sin(3.14156).print()
+	#print("sin 2pi -> ", machine.to_float(machine.machine_sin(2 * 3.141516)))
+	#print("sin pi -> ", machine.to_float(machine.machine_sin(3.141516)))
+	#print("sin pi/2 -> ", machine.to_float(machine.machine_sin(3.141516 / 2)))
+	print("sin pi/3 -> ", machine.to_float(machine.machine_sin(3.141516 / 3)))
+	#print("sin pi/4 -> ", machine.to_float(machine.machine_sin(3.141516 / 4)))
 	
 	#ProgramParameters.set_machine(machine)
 	#get_tree().change_scene("res://scenes/machine_circle_calc.tscn")

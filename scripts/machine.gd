@@ -73,7 +73,12 @@ func to_float(n1: MachineNumber) -> float:
 	var mexp: int = n1._exp
 	
 	for i in range(len(n1._mantisse)):
-		res += int(n1._mantisse[i]) * pow(n1._base, mexp - 1)
+		print("base: ", n1._base)
+		print("mantisse number: ", float(n1._mantisse[i]))
+		print("pow: ", pow(n1._base, mexp - 1))
+		print("mult: ", float(n1._mantisse[i]) * pow(n1._base, mexp - 1))
+		res += float(n1._mantisse[i]) * pow(n1._base, mexp - 1)
+		print("sum %d : %f "% [i, res] )
 		mexp -= 1
 	
 	if n1._sign:
@@ -82,14 +87,11 @@ func to_float(n1: MachineNumber) -> float:
 	return res
 
 func add(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
-	print("start add")
 	n1 = MachineNumber.new(n1._base, PoolByteArray(n1._mantisse), n1._exp, n1._sign)
 	n2 = MachineNumber.new(n2._base, PoolByteArray(n2._mantisse), n2._exp, n2._sign)
 	if n1.is_zero():
-		print("goes zero")
-		return n2
+		return n2;
 	if n2.is_zero():
-		print("goes zero")
 		return n1
 	if (n1._sign != n2._sign):
 		n2 = MachineNumber.new(n2._base, PoolByteArray(n2._mantisse), n2._exp, !n2._sign)
@@ -112,7 +114,6 @@ func add(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 		n2.shift(1)
 		n2._mantisse[0] = carry_out
 	n2.normalize()
-	print("end add")
 	return n2
 	
 func compare_mantisses(a: PoolByteArray, b: PoolByteArray) -> int:
@@ -135,7 +136,6 @@ func compare(a: MachineNumber, b: MachineNumber) -> int:
 	return compare_mantisses(a._mantisse, b._mantisse)
 
 func sub(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
-	print("start sub")
 	n1 = MachineNumber.new(n1._base, PoolByteArray(n1._mantisse), n1._exp, n1._sign)
 	n2 = MachineNumber.new(n2._base, PoolByteArray(n2._mantisse), n2._exp, !n2._sign)
 	if n1.is_zero():
@@ -169,7 +169,6 @@ func sub(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 			borrow = 0
 		n1._mantisse[x] = diff
 	n1.normalize()
-	print("end sub")
 	return n1
 
 func mult(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
@@ -179,17 +178,22 @@ func mult(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 												0, int(n1._sign) ^ int(n2._sign))
 	
 	n3.shift(_mantisse_len)
-	
-	print("n1 exp: ", n1._exp)
-	for i in range(n1._exp - 1, -1, -1):
-			var n4: MachineNumber = MachineNumber.new(n2._base, PoolByteArray(n2._mantisse), \
-												0, false)
-			n4.shift(_mantisse_len)
+	#print("multiply %f %f"%[to_float(n1), to_float(n2)])
+
+	#for i in range(n1._exp - 1, -1, -1):
+	for i in range(_mantisse_len - 1, -1, -1):
+			#print("%d -> "%[i])
+			
+			var n4: MachineNumber = represent(0)
 			
 			for j in range(int(n1._mantisse[i])):
 				n4 = self.add(n4, n2)
 			
-			n4._exp += n1._exp - i - 1
+			#n4._exp += n1._exp - i - 1
+			
+			n4._exp += n1._exp - (i + 1)
+			#print("exp : ", n4._exp)
+			n4.normalize()
 			
 			n3 = self.add(n3, n4)
 	
@@ -209,6 +213,7 @@ func div(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 	n2._exp = 0
 	var _mantisse = PoolByteArray()
 	var started = false
+	#print("dividing %f %f"%[to_float(n1), to_float(n2)])
 	while _mantisse.size() < _mantisse_len:
 		var digit = 0
 		var cur = represent(0)
@@ -223,23 +228,26 @@ func div(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 		n1 = sub(n1, cur)
 		n1._exp += 1
 	
-	return MachineNumber.new(_mantisse_len, _mantisse, _exp, signa)
+	return MachineNumber.new(n1._base, _mantisse, _exp, signa)
 
 func machine_sin(n1: float) -> MachineNumber:
 	var tpot = represent(n1)
 	var tsqr = mult(tpot, tpot)
 	var fat = represent(1)
 	var sum = represent(0)
-	for i in range(1, 6):
+	for i in range(1, 10):
 		print(i, ": ")
-		if (i-1)%2 == 0:
+		if (i-1) % 2 == 0:
 			sum = add(sum, div(tpot, fat))
 		else:
 			sum = sub(sum, div(tpot, fat))
+		#print(i, ": ")
 		tpot = mult(tpot, tsqr)
-		tpot.print()
+
 		fat = mult(fat, mult(represent(2*i), represent(2*i+1)))
-		fat.print()
+		sum.print()
+
+	#print("ok")
 	return sum
 	
 func machine_cos(n1: float) -> MachineNumber:
@@ -247,11 +255,11 @@ func machine_cos(n1: float) -> MachineNumber:
 	var tsqr = mult(tpot, tpot)
 	var fat = represent(2)
 	var sum = represent(1)
-	for i in range(1, 6):
-		if i%2 == 0:
+	for i in range(1, 10):
+		if (i-1) % 2 == 0:
 			sum = add(sum, div(tpot, fat))
 		else:
 			sum = sub(sum, div(tpot, fat))
 		tpot = mult(tpot, tsqr)
-		fat = mult(fat, mult(represent(i+2), represent(i+3)))
+		fat = mult(fat, mult(represent(2*i+2), represent(2*i+3)))
 	return sum
