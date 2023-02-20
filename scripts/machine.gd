@@ -176,7 +176,7 @@ func mult(n1: MachineNumber, n2: MachineNumber) -> MachineNumber:
 	n2 = MachineNumber.new(n2._base, PoolByteArray(n2._mantisse), n2._exp, n2._sign)
 	var n3: MachineNumber = MachineNumber.new(n1._base, PoolByteArray(n1._mantisse), \
 												0, int(n1._sign) ^ int(n2._sign))
-	
+	n2._sign = 0
 	n3.shift(_mantisse_len)
 	#print("multiply %f %f"%[to_float(n1), to_float(n2)])
 
@@ -248,7 +248,6 @@ func machine_sin(n1: float) -> MachineNumber:
 	return sum
 	
 func machine_cos(n1: float) -> MachineNumber:
-	n1 = abs(n1)
 	var tpot = represent(n1)
 	var tsqr = mult(tpot, tpot)
 	tpot = represent(1)
