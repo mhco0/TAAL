@@ -18,6 +18,8 @@ button = Button(button_ax, "Try build function")
 button_clear = Button(button_ax2, "Clear points")
 plt.subplots_adjust(bottom=0.3, right=0.9)
 
+button_callback = None
+
 def on_scree_click(event):
     global clicked_points
     global DIFFERENCE_TO_CONSIDER_SAME_X
@@ -51,7 +53,14 @@ def on_scree_click(event):
     plt.draw()
 
 def on_button_click(event):
-    plt.close()
+    global button
+    global button_clear
+    del button
+    del button_clear
+    #plt.close()
+
+    button_callback()
+    plt.draw()
 
 def on_clear_button_click(event):
     global scatter
@@ -85,3 +94,9 @@ def clear_points():
     global clicked_points
 
     clicked_points.clear()
+
+
+def set_creation_callback(f):
+    global button_callback
+
+    button_callback = f
