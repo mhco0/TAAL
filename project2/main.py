@@ -1,5 +1,6 @@
 from src import linsolver as ls
 from src import ui as ui
+import sympy as sym
 
 def create_approximation():
     points = ls.np.array(ui.get_clicked_points())
@@ -26,7 +27,13 @@ def create_approximation():
     print(p(x_coords))
     
     ui.plt.ylim([ui.YMIN_LIMIT, ui.YMAX_LIMIT])
-    ui.plt.plot(x, p(x))
+    ui.plt.xlabel("x")
+    ui.plt.ylabel("y")
+    line1 = ui.plt.plot(x, p(x))
+    x = sym.symbols('x')
+    Eq1 = sym.printing.latex(sym.Poly(reversed(p.coef), x).as_expr())
+    ui.plt.legend((line1),("${}$".format(Eq1), ), bbox_to_anchor=(0, 0.02, 1, 0.2), loc="lower left", bbox_transform= ui.fig.transFigure,
+                mode="expand", borderaxespad=0, draggable=True)
     ui.plt.scatter(x_coords, y_coords)
 
     ui.plt.draw()
