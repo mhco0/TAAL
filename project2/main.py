@@ -33,7 +33,7 @@ def create_approximation():
     x = sym.symbols('x')
     Eq1 = sym.printing.latex(sym.Poly(reversed(p.coef), x).as_expr())
     ui.plt.legend((line1),("${}$".format(Eq1), ), bbox_to_anchor=(0, 0.02, 1, 0.2), loc="lower left", bbox_transform= ui.fig.transFigure,
-                mode="expand", borderaxespad=0, draggable=True)
+                mode="expand", borderaxespad=0)
     ui.plt.scatter(x_coords, y_coords)
 
     ui.plt.draw()

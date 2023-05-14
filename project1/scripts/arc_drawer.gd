@@ -3,7 +3,7 @@ extends Node2D
 var angle_to: float = 45 # The angle for the circunference based on the x axis
 var radius: float = 40 # The radius for the circunference
 var color: Color = Color(0.0, 0.0, 0.0) # The color for the circunference
-var nb_points: int = 10 # The number of points used on the circunference
+var nb_points: int = 60 # The number of points used on the circunference
 
 ##
 # @brief Drawing function. Made the draw of the circle

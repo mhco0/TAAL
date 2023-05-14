@@ -3,6 +3,16 @@ from fractions import Fraction
 
 clear = lambda: os.system('cls' if os.name == 'nt' else 'clear')
 
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
 
 class SimplexSolver():
     ''' Solves linear programs using simplex algorithm and
@@ -36,28 +46,32 @@ class SimplexSolver():
             if(enable_msg):
                 clear()
                 self._print_tableau()
-                print(("Current solution: %s\n" %
-                      str(self.get_current_solution())))
+                print("Solucao atual: %s\n" %
+                      str(self.get_current_solution()))
                 self._prompt()
             
             # Attempt to find a non-negative pivot.
             pivot = self.find_pivot()
             if pivot[1] < 0:
                 if (enable_msg):
-                    print ("There exists no non-negative pivot. "
-                           "Thus, the solution is infeasible.")
+                    print ("Nao existe um pivot negativo. "
+                           "Portanto, a solucao e impratica.")
                 return None
             else:
                 if (enable_msg):
                     clear()
                     self._print_tableau()
-                    print(("\nThere are negative elements in the bottom row, "
-                          "so the current solution is not optimal. "
-                          "Thus, pivot to improve the current solution. The "
-                          "entering variable is %s and the departing "
-                          "variable is %s.\n" %
-                           (str(self.entering[pivot[0]]),
-                           str(self.departing[pivot[1]]))))
+                    print((f"\nComo ainda temos elementos negativos na linha de baixo, "
+                          "entao ainda temos que continuar o algoritmo. "
+                          "Entao, pivotaremos a solucao atual. A "
+                          "variavel de entrada e %s %s %s e a variavel de saida "
+                          "da base e %s %s %s.\n" %
+                           (bcolors.OKGREEN,
+                            str(self.entering[pivot[0]]),
+                            bcolors.ENDC,
+                            bcolors.FAIL,
+                            str(self.departing[pivot[1]]),
+                            bcolors.ENDC)))
                     self._prompt()
                     print("\nPerform elementary row operations until the "
                           "pivot is one and all other elements in the "
@@ -70,8 +84,8 @@ class SimplexSolver():
         if (enable_msg):
             clear()
             self._print_tableau()
-            print(("Current solution: %s\n" % str(solution)))
-            print("That's all folks!")
+            print(("Solucao atual: %s\n" % str(solution)))
+            print("Finalizando...")
         return solution
         
     def set_simplex_input(self, A, b, c):
@@ -268,7 +282,7 @@ class SimplexSolver():
         for row in M:
             print('|', end=' ')
             for val in row:
-                print('{:^5}'.format(str(val)), end=' ')
+                print('{:^6}'.format(str(val)), end=' ')
             print('|')
 
     def _print_tableau(self):
@@ -276,12 +290,12 @@ class SimplexSolver():
         '''
         print(' ', end=' ')
         for val in self.entering:
-            print('{:^5}'.format(str(val)), end=' ')
+            print('{:^6}'.format(str(val)), end=' ')
         print(' ')
         for num, row in enumerate(self.tableau):
             print('|', end=' ')
             for index, val in enumerate(row):
-                print('{:^5}'.format(str(val)), end=' ')
+                print('{:^6}'.format(str(val)), end=' ')
             if num < (len(self.tableau) -1):
                 print('| %s' % self.departing[num])
             else:
